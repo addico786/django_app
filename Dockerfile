@@ -13,6 +13,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 RUN python manage.py makemigrations
 RUN python manage.py migrate
 
+# RUN adduser -D appuser  use these commands when in production, to prevent running docker from root 
+# USER appuser
+
 
 EXPOSE 8000
 
