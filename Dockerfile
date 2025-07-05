@@ -5,9 +5,6 @@ WORKDIR /app
 COPY  . .
 
 COPY requirements.txt . 
-RUN sudo apt-get install virtualenv
-RUN virtualenv env 
-RUN source env/bin/activate
 RUN pip install --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt
 RUN python manage.py makemigrations
