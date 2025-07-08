@@ -2,6 +2,14 @@ pipeline {
     agent { label 'slave1' }
 
     stages {
+        stage('updating the server'){
+            steps{
+                echo "updating the server"
+                sh "sudo apt-get update "
+                echo "server updated succesfully"
+            }
+        }
+        
         stage('Copying the code') {
             steps {
                 echo "Copying the code"
