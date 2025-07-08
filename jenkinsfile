@@ -38,7 +38,7 @@ pipeline{
                 sh "docker login -u ${env.dockerhubuser} -p ${env.dockerhubpass}"
                 sh "docker image tag my-app:latest ${env.dockerhubuser}/notes-app:latest "
                 sh "docker push ${env.dockerhubuser}/my-app:latest"
-                echo "code pushed to docker hub sucessfully"
+                echo "code pushed to docker hub sucessfully "
             }
         }
 
