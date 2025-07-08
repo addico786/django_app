@@ -1,10 +1,10 @@
 pipeline{
-    agent{any}
+    agent {label 'slave1'}
     stages{
         stage('copying the code'){
             steps{
                 echo "copying the code"
-                git url:"https://github.com/addico786/django_app.git",branch"master"
+                git url:"https://github.com/addico786/django_app.git",branch:"master"
 
                 echo "code copied sucessfully"
             }
