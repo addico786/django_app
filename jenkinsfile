@@ -47,7 +47,8 @@ pipeline {
         stage('Deploying the code on server') {
             steps {
                 echo "Deploying the code on server"
-                sh "docker run -d -p 8000:8000 my-app:latest"
+                sh "docker rm -f my-app-container"
+                sh "docker run -d -p 8000:8000 --name my-app-container my-app:latest"
                 sh "docker ps"
                 echo "Code deployed successfully"
             }
