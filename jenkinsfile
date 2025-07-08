@@ -23,6 +23,7 @@ pipeline {
         stage('Building the code') {
             steps {
                 echo "Building the code"
+                sh "docker rmi -f my-app:latest" # remove the image if it exists
                 sh "docker build -t my-app:latest ."
                 echo "Code built successfully"
             }
@@ -44,13 +45,36 @@ pipeline {
             }
         }
 
+        stage('Creating Docker network') {
+            steps {
+                echo "Creating Docker network"
+                sh "docker network rm my-app-network" # remove the network if it exists
+                sh "docker network ls"
+                sh "docker network create my-app-network -d bridge"
+                echo "Docker network created successfully"
+            }
+        }
+
         stage('Deploying the code on server') {
             steps {
                 echo "Deploying the code on server"
-                sh "docker rm -f my-app-container"
-                sh "docker run -d -p 8000:8000 --name my-app-container my-app:latest"
+                sh "docker network ls"
+                sh "docker rm -f my-app-container" # remove the container if it exists
+                sh "docker run -d -p 8000:8000 --name my-app-container --network my-app-network my-app:latest" #including the container in the network
                 sh "docker ps"
-                echo "Code deployed successfully"
+                echo "Django app deployed successfully"
+            }
+        }
+
+        stage('Setting up NGINX, reverse proxy') {
+            steps {
+                echo "Setting up NGINX as reverse proxy"
+                sh "docker rmi -f nginx" # remove the image if it exists
+                sh "docker build -t nginx websites/nginx"
+                sh "docker rm -f nginx-proxy " # remove the container if it exists
+                sh "docker run -d --name nginx-proxy -p 80:80 --network my-app-network nginx" #including the container in the network
+                sh "docker ps"
+                echo "NGINX reverse proxy started on port 80"
             }
         }
     }
