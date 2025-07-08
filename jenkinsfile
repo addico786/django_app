@@ -72,7 +72,7 @@ pipeline {
             steps {
                 echo "Setting up NGINX as reverse proxy"
                 sh "docker rmi -f nginx || true" # remove the image if it exists
-                sh "docker build -t nginx /nginx"
+                sh "docker build -t nginx ./nginx"
                 sh "docker rm -f nginx-proxy || true " # remove the container if it exists
                 sh "docker run -d --name nginx-proxy -p 80:80 --network my-app-network nginx" #including the container in the network
                 sh "docker ps"
