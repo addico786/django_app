@@ -53,7 +53,7 @@ pipeline {
                 sh "docker network rm my-app-network" # remove the network if it exists
                 sh "docker network ls"
                 sh "docker network create my-app-network -d bridge"
-                echo "Docker network created successfully"
+                echo "Docker network created successfully" 
             }
         }
 
