@@ -74,7 +74,7 @@ pipeline {
                 sh "docker rm -f nginx-proxy " # remove the container if it exists
                 sh "docker run -d --name nginx-proxy -p 80:80 --network my-app-network nginx" #including the container in the network
                 sh "docker ps"
-                echo "NGINX reverse proxy started on port 80"
+                echo "NGINX reverse proxy started on port 80" 
             }
         }
     }
