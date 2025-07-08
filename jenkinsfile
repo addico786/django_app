@@ -10,9 +10,20 @@ pipeline{
             }
         }
 
+        stage('installing Docker'){
+            steps{
+                echo "installing Docker"
+                sh "curl -LO https://raw.githubusercontent.com/addico786/tools_download_scripts/master/docker.sh"
+                sh "sudo chmod +x docker.sh"
+                sh "./docker.sh"
+                echo "Docker installed succesfully"
+            }
+        }
+
         stage('building the code'){
             steps{
                 echo "building the code"
+                sh "docker build -t my-app:latest ."
                 echo "code built sucessfully"
             }
         }
@@ -20,6 +31,13 @@ pipeline{
         stage('pushing to docker hub'){
             steps{
                 echo "pushing thecode to docker hub"
+                withCredentials([usernamePassword(
+                    'credentialsId':"docker-hub-cred"
+                    ,passwordVariable:"dockerhubPass"
+                    ,usernameVariable:"dockerhubuser")]){
+                sh "docker login -u ${env.dockerhubuser} -p ${env.dockerhubpass}"
+                sh "docker image tag my-app:latest ${env.dockerhubuser}/notes-app:latest "
+                sh "docker push ${env.dockerhubuser}/my-app:latest"
                 echo "code pushed to docker hub sucessfully"
             }
         }
@@ -27,6 +45,8 @@ pipeline{
         stage('deploying the code on server'){
             steps{
                 echo "deploying the code on server"
+                sh "docker run -d -p 8000:8000 my-app:latest "
+                sh "docker ps "
                 echo "code deployed sucessfully"
             }
         }
