@@ -1,53 +1,55 @@
-pipeline{
-    agent {label 'slave1'}
-    stages{
-        stage('copying the code'){
-            steps{
-                echo "copying the code"
-                git url:"https://github.com/addico786/django_app.git",branch:"master"
+pipeline {
+    agent { label 'slave1' }
 
-                echo "code copied sucessfully"
+    stages {
+        stage('Copying the code') {
+            steps {
+                echo "Copying the code"
+                git url: "https://github.com/addico786/django_app.git", branch: "master"
+                echo "Code copied successfully"
             }
         }
 
-        stage('installing Docker'){
-            steps{
-                echo "installing Docker"
+        stage('Installing Docker') {
+            steps {
+                echo "Installing Docker"
                 sh "curl -LO https://raw.githubusercontent.com/addico786/tools_download_scripts/master/docker.sh"
-                sh "sudo chmod +x docker.sh"
+                sh "chmod +x docker.sh"
                 sh "./docker.sh"
-                echo "Docker installed succesfully"
+                echo "Docker installed successfully"
             }
         }
 
-        stage('building the code'){
-            steps{
-                echo "building the code"
+        stage('Building the code') {
+            steps {
+                echo "Building the code"
                 sh "docker build -t my-app:latest ."
-                echo "code built sucessfully"
+                echo "Code built successfully"
             }
         }
 
-        stage('pushing to docker hub'){
-            steps{
-                echo "pushing thecode to docker hub"
+        stage('Pushing to Docker Hub') {
+            steps {
+                echo "Pushing the code to Docker Hub"
                 withCredentials([usernamePassword(
-                    'credentialsId':"docker-hub-cred"
-                    ,passwordVariable:"dockerhubPass"
-                    ,usernameVariable:"dockerhubuser")]){
-                sh "docker login -u ${env.dockerhubuser} -p ${env.dockerhubpass}"
-                sh "docker image tag my-app:latest ${env.dockerhubuser}/notes-app:latest "
-                sh "docker push ${env.dockerhubuser}/my-app:latest"
-                echo "code pushed to docker hub sucessfully "
+                    credentialsId: "docker-hub-cred",
+                    usernameVariable: "dockerhubuser",
+                    passwordVariable: "dockerhubPass"
+                )]) {
+                    sh "docker login -u ${dockerhubuser} -p ${dockerhubPass}"
+                    sh "docker image tag my-app:latest ${dockerhubuser}/my-app:latest"
+                    sh "docker push ${dockerhubuser}/my-app:latest"
+                    echo "Code pushed to Docker Hub successfully"
+                }
             }
         }
 
-        stage('deploying the code on server'){
-            steps{
-                echo "deploying the code on server"
-                sh "docker run -d -p 8000:8000 my-app:latest "
-                sh "docker ps "
-                echo "code deployed sucessfully"
+        stage('Deploying the code on server') {
+            steps {
+                echo "Deploying the code on server"
+                sh "docker run -d -p 8000:8000 my-app:latest"
+                sh "docker ps"
+                echo "Code deployed successfully"
             }
         }
     }
