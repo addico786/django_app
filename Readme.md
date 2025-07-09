@@ -11,7 +11,7 @@ git clone https://github.com/addico786/django_app.git
 
 ## From root directory 
 ```
-docker build -t myapp:latest .
+docker build -t my-app:latest .
 ```
 
 ## From root directory 
@@ -29,7 +29,7 @@ docker network ls
 
 ## Run the containers 
 ```
-docker run -d -p 8000:8000 --name my-app-container --network my-app-network my-app
+docker run -d -p 8000:8000 --name my-app-container --network my-app-network my-app:latest
 ```
 
 ```
