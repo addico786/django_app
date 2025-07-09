@@ -31,5 +31,4 @@ docker ps
 localhost:80
 ```
 
-
-## In Development...
+### Developed my Adnan Khan
