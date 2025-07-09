@@ -4,7 +4,7 @@
 
 # Prerequisites
 
-## clone the repo
+## Clone the repo
 ```
 git clone https://github.com/addico786/django_app.git
 ```
