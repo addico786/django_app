@@ -1,4 +1,4 @@
-## Django Application with CI/CD 
+# Django Application with CI/CD 
 
 ![Design](/static/design.png)
 
