@@ -30,5 +30,9 @@ docker ps
 ```
 localhost:80
 ```
+## Run without docker 
+```
+python3 manage.py makemigrations && python3 manage.py migrate && python3 manage.py runserver 
+```
 
 ### Developed by Adnan Khan
