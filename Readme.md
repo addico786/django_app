@@ -3,6 +3,7 @@
 ![Design](/static/design.png)
 
 # Prerequisites
+make sure you have python installed on your machine
 
 ## Clone the repo
 ```
