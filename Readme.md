@@ -5,6 +5,8 @@
 # Prerequisites
 make sure you have python installed on your machine
 
+# Deployement 
+
 ## Clone the repo
 ```
 git clone https://github.com/addico786/django_app.git
